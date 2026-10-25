@@ -2,9 +2,9 @@ import type { Person, SearchFilters } from '../../types'
 import { csvProvider } from './csv'
 import { demoProvider } from './demo'
 import type { PeopleProvider, ProviderContext } from './types'
-import { liveProviders } from './web'
+import { liveProviders, tavilyProvider } from './web'
 
-export const PROVIDERS: PeopleProvider[] = [demoProvider, csvProvider, ...liveProviders]
+export const PROVIDERS: PeopleProvider[] = [demoProvider, csvProvider, tavilyProvider, ...liveProviders]
 
 export async function searchProviders(ids: string[], query: string, filters: SearchFilters, ctx: ProviderContext): Promise<{ people: Person[]; errors: string[] }> {
   const people = new Map<string, Person>()

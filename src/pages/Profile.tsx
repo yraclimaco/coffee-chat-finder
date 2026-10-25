@@ -2,7 +2,7 @@ import { Download, RotateCcw, Upload } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { ProfileForm } from '../components/ProfileForm'
 import { useToast } from '../components/Toast'
-import { PageHeader, Section } from '../components/ui'
+import { PageHeader, Section, Toggle } from '../components/ui'
 import { FACTOR_DEFAULTS } from '../data/defaults'
 import { PROVIDERS } from '../lib/providers'
 import { CSV_TEMPLATE, csvToPeople } from '../lib/providers/csv'
@@ -91,6 +91,11 @@ export default function Profile() {
             {s.imported.length > 0 && <button className="btn-quiet text-xs" onClick={() => { actions.removeImported(); toast('Removed imported people') }}>Remove {s.imported.length} imported</button>}
           </div>
         </div>
+      </Section>
+
+      <Section title="Demo data">
+        <Toggle checked={s.hideDemo} onChange={actions.setHideDemo} label="Hide the fictional demo profiles (show only people I added)" />
+        {s.hideDemo && s.imported.length === 0 && <p className="mt-2 text-xs text-ink-soft">You have not added anyone yet. Use “Find real people on the public web” in Search, or import a CSV above.</p>}
       </Section>
 
       <Section title="Reset">

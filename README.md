@@ -33,10 +33,16 @@ State (preferences, saved people, pipeline, searches) lives in browser localStor
 
 Hiring and open-role flags in `src/data/companies.ts` are illustrative placeholders, not live data.
 
-## Connecting live search later
+## Real people: public web search
 
-Implement `searchPeople(query, filters, ctx)` in a provider (see `src/lib/providers/web.ts` for stubs for Tavily, Google Custom Search, Bing, SerpAPI and a company-page crawler), and map results with `webResultToPerson`. Call third-party APIs from a small server-side proxy so keys never reach the browser, and keep each provider behind explicit user approval. Use only public pages and approved APIs. Do not scrape LinkedIn or anything behind a login, and do not guess email addresses.
+Search > "Find real people on the public web" calls `/api/search`, a small server function (`api/search.ts`, shared logic in `api/_core.ts`) that queries Tavily. LinkedIn, social sites and contact-lookup sites are excluded. Only your search words are sent. Results are unverified leads: you open the source, correct name, role and company, then add them. Added people are scored like everyone else.
+
+1. Create a Tavily key and copy `.env.example` to `.env.local` with `TAVILY_API_KEY=...`, then `npm run dev`.
+2. Deploy on Vercel and set `TAVILY_API_KEY` (and an `ACCESS_CODE`) under Project Settings > Environment Variables. The browser asks for the code once.
+3. Profile > Demo data > hide the fictional profiles.
+
+Other providers (Google Custom Search, Bing, SerpAPI, crawlers) follow the same pattern: implement `searchPeople` and keep keys on the server. Never scrape LinkedIn or anything behind a login, and never guess email addresses.
 
 ## Env vars
 
-None are required. `.env.example` lists the optional keys a future live provider would use.
+`TAVILY_API_KEY` (required for web search) and `ACCESS_CODE` (optional) on the server. Demo data and CSV import work without them.

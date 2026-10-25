@@ -11,5 +11,5 @@ export function useScored() {
     people.forEach((p) => scores.set(p.id, scorePerson(p, s.profile)))
     const byId = new Map<string, Person>(people.map((p) => [p.id, p]))
     return { people, scores, byId }
-  }, [s.profile, s.imported])
+  }, [s.profile, s.imported, s.hideDemo])
 }

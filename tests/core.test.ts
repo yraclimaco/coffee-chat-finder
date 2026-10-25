@@ -124,3 +124,15 @@ describe('csv import', () => {
     expect(skipped).toBe(1)
   })
 })
+
+describe('web leads', () => {
+  it('extracts name, role and company from typical titles and builds a clean query', async () => {
+    const { webResultToPerson, buildWebQuery } = await import('../src/lib/providers/web')
+    const p = webResultToPerson({ title: 'Jane Doe - Product Analyst at Riot Games | Team', url: 'https://example.com/team/jane', snippet: 'x' }, 'Public web search')
+    expect(p).toMatchObject({ name: 'Jane Doe', role: 'Product Analyst', company: 'Riot Games', isDemo: false, sourceUrl: 'https://example.com/team/jane' })
+    expect(p.tags).toContain('unverified')
+    const q = buildWebQuery('', { ...EMPTY_FILTERS, role: 'Product Management', company: 'Riot Games', school: 'UC San Diego' })
+    expect(q).toContain('Riot Games')
+    expect(q).not.toMatch(/Yra|3\.82/)
+  })
+})

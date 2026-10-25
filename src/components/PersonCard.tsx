@@ -27,6 +27,7 @@ export function PersonCard({ person, result, onDismiss, defaultOpen = false }: {
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <Link to={`/person/${person.id}`} className="font-display text-lg font-semibold leading-tight hover:text-accent-deep hover:underline">{person.name}</Link>
             {person.isDemo && <DemoTag />}
+            {person.tags.includes('unverified') && <span className="rounded-md bg-accent-soft px-1.5 py-px text-[10px] font-semibold uppercase tracking-wider text-accent-deep">Unverified</span>}
           </div>
           <p className="text-sm text-ink-soft">{person.role} <span className="text-ink-faint">at</span> <span className="font-medium text-ink">{person.company}</span></p>
           <p className="mt-0.5 flex flex-wrap items-center gap-x-3 text-xs text-ink-faint">

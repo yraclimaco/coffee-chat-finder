@@ -1,11 +1,11 @@
-import { Bookmark, Clock, Globe, SlidersHorizontal, Trash2, X } from 'lucide-react'
+import { Bookmark, Clock, SlidersHorizontal, Trash2, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { PersonCard } from '../components/PersonCard'
+import { WebLeads } from '../components/WebLeads'
 import { useToast } from '../components/Toast'
 import { EmptyState, Field, PageHeader, Toggle } from '../components/ui'
 import { useScored } from '../lib/hooks'
-import { PROVIDERS, searchProviders } from '../lib/providers'
 import { EXAMPLE_QUERIES, SORT_LABELS, activeFilterChips, facetValues, mergeFilters, parseQuery, searchPeopleLocal, suggest } from '../lib/search'
 import type { SortKey } from '../lib/search'
 import { actions, useApp } from '../lib/store'
@@ -25,7 +25,6 @@ export default function SearchPage() {
   const [sort, setSort] = useState<SortKey>('best')
   const [showAdv, setShowAdv] = useState(false)
   const [focus, setFocus] = useState(false)
-  const [live, setLive] = useState<{ errors: string[]; n: number } | null>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const facets = useMemo(() => facetValues(people), [people])
 
@@ -67,12 +66,7 @@ export default function SearchPage() {
   }
 
   const setF = (patch: Partial<SearchFilters>) => setFilters({ ...effective, ...patch })
-  const clearAll = () => { setFilters(EMPTY_FILTERS); setDraft(''); setParams({}); setLive(null) }
-
-  const askLive = async () => {
-    const res = await searchProviders(PROVIDERS.filter((p) => p.kind === 'live').map((p) => p.id), draft, effective, { profile: s.profile, localPeople: people })
-    setLive({ errors: res.errors, n: res.people.length })
-  }
+  const clearAll = () => { setFilters(EMPTY_FILTERS); setDraft(''); setParams({}) }
 
   const showDropdown = focus && (suggestions.length > 0 || (!draft && (s.recentSearches.length > 0 || s.savedSearches.length > 0)))
 
@@ -198,14 +192,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      <div className="card mt-8 flex flex-wrap items-center justify-between gap-3 p-4 text-sm">
-        <div className="max-w-lg">
-          <b className="flex items-center gap-1.5"><Globe size={15} />Live sources</b>
-          <p className="mt-0.5 text-xs text-ink-soft">Public web search and company-page providers are not connected. Nothing is requested until you set one up and approve it.</p>
-          {live && <p className="mt-2 text-xs text-ink-soft">{live.errors.length ? live.errors.join(' ') : `${live.n} results`}</p>}
-        </div>
-        <button className="btn-ghost text-xs" onClick={askLive}>Try live providers</button>
-      </div>
+      <WebLeads query={draft} filters={effective} />
       {s.savedSearches.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {s.savedSearches.map((sv) => (

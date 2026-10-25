@@ -61,7 +61,7 @@ export default function Discover() {
       </div>
 
       {visible.length === 0 ? (
-        <EmptyState title="No one matches this view" body="Try a broader chip, or restore people you dismissed." action={s.dismissed.length ? <button className="btn-ghost" onClick={actions.clearDismissed}>Restore dismissed</button> : undefined} />
+        <EmptyState title={people.length === 0 ? 'No people yet' : 'No one matches this view'} body={people.length === 0 ? 'Demo data is hidden and you have not added anyone. Search the public web or import a CSV to get started.' : 'Try a broader chip, or restore people you dismissed.'} action={s.dismissed.length ? <button className="btn-ghost" onClick={actions.clearDismissed}>Restore dismissed</button> : undefined} />
       ) : (
         <div className="grid gap-4">
           {visible.map((p) => (

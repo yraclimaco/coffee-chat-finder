@@ -51,6 +51,7 @@ export default function PersonPage() {
     <div className="space-y-5">
       <Link to="/" onClick={(e) => { if (window.history.length > 1) { e.preventDefault(); window.history.back() } }} className="inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink"><ArrowLeft size={15} />Back</Link>
 
+      {person.tags.includes('unverified') && <p className="rounded-xl border border-accent/30 bg-accent-soft px-4 py-2.5 text-sm text-accent-deep">Found through public web search and not verified. Check the source page before reaching out.</p>}
       <header className="card p-5 sm:p-6">
         <div className="flex flex-wrap items-start gap-4">
           <Avatar name={person.name} size={64} />

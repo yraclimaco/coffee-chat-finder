@@ -16,6 +16,7 @@ export interface AppState {
   recentSearches: string[]
   savedSearches: SavedSearch[]
   imported: Person[]
+  hideDemo: boolean
   seen: Record<string, string>
 }
 
@@ -30,6 +31,7 @@ function initial(): AppState {
     recentSearches: [],
     savedSearches: [],
     imported: [],
+    hideDemo: false,
     seen: {},
   }
 }
@@ -63,7 +65,7 @@ export function useApp(): AppState {
 }
 
 export const getState = () => state
-export const allPeople = (s: AppState = state): Person[] => [...DEMO_PEOPLE, ...s.imported]
+export const allPeople = (s: AppState = state): Person[] => (s.hideDemo ? s.imported : [...DEMO_PEOPLE, ...s.imported])
 
 const now = () => new Date().toISOString()
 export const today = () => new Date().toISOString().slice(0, 10)
@@ -123,6 +125,7 @@ export const actions = {
   deleteSavedSearch(id: string) { commit({ ...state, savedSearches: state.savedSearches.filter((s) => s.id !== id) }) },
 
   importPeople(people: Person[]) { commit({ ...state, imported: [...state.imported, ...people] }) },
+  setHideDemo(v: boolean) { commit({ ...state, hideDemo: v }) },
   removeImported() { commit({ ...state, imported: [] }) },
 
   updateOutreach(personId: string, patch: Partial<Outreach>) {
