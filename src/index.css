@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-paper font-sans text-ink antialiased; }
+  h1, h2 { @apply font-display; }
+  ::selection { background: #f2d3c4; }
+  input, select, textarea { @apply text-[15px]; }
+  :focus-visible { @apply outline-none ring-2 ring-accent/40 ring-offset-1 ring-offset-paper; }
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-line bg-card shadow-soft; }
+  .field { @apply w-full rounded-xl border border-line bg-white px-3 py-2 text-ink placeholder:text-ink-faint transition-colors focus:border-accent/60; }
+  .label { @apply mb-1 block text-xs font-medium text-ink-soft; }
+  .btn { @apply inline-flex items-center justify-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-medium transition active:scale-[.98] disabled:opacity-50; }
+  .btn-primary { @apply btn bg-ink text-paper hover:bg-black; }
+  .btn-accent { @apply btn bg-accent text-white hover:bg-accent-deep; }
+  .btn-ghost { @apply btn border border-line bg-card text-ink hover:bg-sand; }
+  .btn-quiet { @apply btn text-ink-soft hover:bg-sand hover:text-ink; }
+  .chip { @apply inline-flex items-center gap-1 rounded-full border border-line bg-card px-2.5 py-1 text-xs font-medium text-ink-soft; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
